@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Elite Protection Bureau — Rookie Verification</title>
+<title>Elite Protection Bureau — Rookie Intake</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 :root {
@@ -71,7 +71,7 @@ body{margin:0;background:var(--c10);color:#f8fafc;font-family:Helvetica,Arial,sa
  .name{font-size:22px;margin-top:23px}
 }
 
-/* EPB terminal loading screen */
+/* buat loding */
 #epb-loader{
   position:fixed; inset:0; z-index:99999; background:#131B2B;
   display:flex; align-items:center; justify-content:center;
@@ -111,6 +111,117 @@ body{margin:0;background:var(--c10);color:#f8fafc;font-family:Helvetica,Arial,sa
   .loader-logo{width:130px}
 }
 
+
+/* patch mobilenyaaah */
+html, body { width:100%; max-width:100%; overflow-x:hidden; }
+img { max-width:100%; height:auto; }
+
+@media (max-width: 768px) {
+  body { -webkit-text-size-adjust:100%; }
+
+  /* Terminal loader */
+  #epb-loader { padding:12px; align-items:center; }
+  .loader-shell {
+    width:100%; max-width:100%; max-height:92svh;
+    overflow:hidden; border-radius:0;
+  }
+  .loader-bar {
+    padding:9px 10px; gap:8px; font-size:8px;
+    letter-spacing:.10em; white-space:normal;
+  }
+  .loader-body { padding:16px; }
+  .loader-logo {
+    width:92px; max-width:28vw; margin:0 0 16px;
+  }
+  .terminal {
+    min-height:132px; font-size:9.5px; line-height:1.65;
+    overflow-wrap:anywhere;
+  }
+
+  /* patch */
+  .hero {
+    min-height:auto !important;
+    padding:52px 18px 36px !important;
+    justify-content:flex-start;
+  }
+  .kicker {
+    font-size:9px; line-height:1.5; letter-spacing:.16em;
+    margin-bottom:16px;
+  }
+  .congrats {
+    font-size:clamp(48px, 15.5vw, 72px) !important;
+    line-height:.88 !important;
+    letter-spacing:.015em !important;
+    overflow-wrap:normal;
+    word-break:normal;
+  }
+  .hero p {
+    font-size:12px; line-height:1.55; margin-top:20px;
+    max-width:100%;
+  }
+
+  /* directoreh */
+  .directory { padding:30px 14px 42px !important; }
+  .directory-head {
+    display:block !important; margin-bottom:16px;
+  }
+  .directory-head h2 {
+    font-size:36px !important; line-height:1;
+    margin-bottom:8px;
+  }
+  .directory-head p {
+    font-size:9px; line-height:1.5; letter-spacing:.07em;
+  }
+  .grid {
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    gap:8px !important;
+    width:100%;
+  }
+  .rookie {
+    width:100%; min-width:0; min-height:112px !important;
+    padding:16px !important;
+  }
+  .unit {
+    font-size:9px; line-height:1.35; letter-spacing:.12em;
+  }
+  .name {
+    font-size:20px !important; line-height:1.12;
+    margin-top:20px !important;
+    overflow-wrap:break-word;
+  }
+
+  /* idc */
+  .id-section {
+    padding:26px 14px 34px !important;
+    display:block !important;
+  }
+  .id-copy { width:100%; }
+  .id-copy h2 {
+    font-size:34px !important; line-height:1;
+    margin-bottom:18px;
+  }
+  .id-download {
+    display:block; width:100% !important; min-width:0 !important;
+    padding:16px !important; text-align:left;
+  }
+  .id-download strong { font-size:23px; }
+
+  .rookie:hover, .id-download:hover {
+    transform:none;
+    box-shadow:none;
+  }
+  .rookie:active { background:var(--c6); }
+  .id-download:active { opacity:.88; }
+}
+
+@media (max-width: 380px) {
+  .congrats { font-size:46px !important; }
+  .loader-logo { width:76px; }
+  .terminal { font-size:8.8px; }
+  .directory { padding-left:12px !important; padding-right:12px !important; }
+}
+
 </style>
 </head>
 <body>
@@ -130,9 +241,9 @@ body{margin:0;background:var(--c10);color:#f8fafc;font-family:Helvetica,Arial,sa
 </div>
 
 <header class="hero">
-  <div class="kicker">ELITE PROTECTION BUREAU · ROOKIE VERIFICATION</div>
+  <div class="kicker">ELITE PROTECTION BUREAU · ROOKIE INTAKE</div>
   <h1 class="congrats">CONGRATULATIONS<br>FOR GETTING INTO<br>THE BUREAU</h1>
-  <p>Your clearance has been registered. Welcome to the Elite Protection Bureau rookie verification database. Select a rookie record below to reveal what awaits you.</p>
+  <p>Your clearance has been registered. Welcome to the Elite Protection Bureau rookie intake. Select a rookie record below to reveal what awaits you.</p>
 </header>
 
 
@@ -355,7 +466,7 @@ body{margin:0;background:var(--c10);color:#f8fafc;font-family:Helvetica,Arial,sa
   const lines = [
     "> initializing EPB secure terminal...",
     "> establishing encrypted bureau connection...",
-    "> verifying new rookie clearance...",
+    "> verifying rookie intake clearance...",
     "> loading personnel directory...",
     "> clearance confirmed.",
     "> ACCESS GRANTED."
