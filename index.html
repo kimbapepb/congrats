@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Elite Protection Bureau — Rookie Intake</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+:root {
+ --c1:#BCC6D4;--c2:#A8B2C1;--c3:#8F9BAF;--c4:#7A8A9B;--c5:#637284;
+ --c6:#4B5C78;--c7:#3A4A61;--c8:#2B3A48;--c9:#1E2A38;--c10:#131B2B;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--c10);color:#f8fafc;font-family:Helvetica,Arial,sans-serif}
+.hero{
+ min-height:72svh;padding:64px max(7vw,24px) 54px;display:flex;flex-direction:column;justify-content:flex-end;
+ background:linear-gradient(120deg,var(--c10),var(--c9) 50%,var(--c6));
+ border-bottom:1px solid rgba(188,198,212,.25)
+}
+.kicker{font-size:11px;letter-spacing:.26em;color:var(--c2);font-weight:700;margin-bottom:18px}
+.congrats{
+ font-family:'Bebas Neue','Arial Narrow',sans-serif;font-size:clamp(52px,9vw,128px);
+ line-height:.86;letter-spacing:.025em;font-weight:400;margin:0;max-width:1050px
+}
+.hero p{max-width:650px;color:var(--c1);line-height:1.6;margin:24px 0 0;font-size:14px}
+.id-section{
+ padding:34px max(7vw,24px);display:flex;gap:28px;align-items:center;justify-content:space-between;
+ background:var(--c8);border-bottom:1px solid rgba(188,198,212,.22)
+}
+.id-copy .label{font-size:10px;letter-spacing:.22em;color:var(--c2);font-weight:700}
+.id-copy h2{font-family:'Bebas Neue','Arial Narrow',sans-serif;font-weight:400;font-size:40px;letter-spacing:.04em;margin:6px 0 0}
+.id-download{
+ text-decoration:none;background:var(--c1);color:var(--c10);padding:17px 20px;min-width:230px;
+ transition:.2s ease;border:1px solid var(--c1)
+}
+.id-download strong{font-family:'Bebas Neue','Arial Narrow',sans-serif;font-size:24px;letter-spacing:.06em;font-weight:400;display:block}
+.id-download small{font-size:9px;letter-spacing:.14em;color:var(--c7)}
+.id-download:hover{background:#fff;transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.25)}
+.directory{padding:50px max(7vw,24px) 90px}
+.directory-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+.directory-head h2{font-family:'Bebas Neue','Arial Narrow',sans-serif;font-size:46px;font-weight:400;letter-spacing:.04em;margin:0}
+.directory-head p{margin:0;color:var(--c2);font-size:12px;letter-spacing:.08em}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px}
+.rookie{
+ min-height:155px;padding:22px;text-decoration:none;color:#fff;background:var(--c9);
+ border:1px solid rgba(188,198,212,.13);display:flex;flex-direction:column;
+ transition:.2s ease;position:relative;overflow:hidden
+}
+.rookie::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--c5)}
+.rookie:nth-child(4n+1)::after{background:var(--c2)}
+.rookie:nth-child(4n+2)::after{background:var(--c4)}
+.rookie:nth-child(4n+3)::after{background:var(--c6)}
+.rookie:nth-child(4n)::after{background:var(--c7)}
+.rookie:hover{background:var(--c6);transform:translateY(-3px);z-index:2;box-shadow:0 12px 28px rgba(0,0,0,.25)}
+.unit{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--c2);font-weight:700;margin-bottom:auto}
+.name{font-size:21px;font-weight:700;line-height:1.12;margin-top:28px}
+
+@media(max-width:700px){
+ .hero{min-height:62svh;padding:44px 20px 36px}
+ .congrats{font-size:clamp(54px,17vw,82px);line-height:.88}
+ .hero p{font-size:13px}
+ .id-section{padding:28px 20px;flex-direction:column;align-items:stretch}
+ .id-copy h2{font-size:34px}
+ .id-download{width:100%;min-width:0}
+ .directory{padding:36px 20px 60px}
+ .directory-head{align-items:flex-start;flex-direction:column}
+ .directory-head h2{font-size:40px}
+ .grid{grid-template-columns:1fr;gap:8px}
+ .rookie{min-height:128px;padding:19px}
+ .name{font-size:22px;margin-top:23px}
+}
+
+/* EPB terminal loading screen */
+#epb-loader{
+  position:fixed; inset:0; z-index:99999; background:#131B2B;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px; transition:opacity .65s ease, visibility .65s ease;
+}
+#epb-loader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.loader-shell{
+  width:min(720px,100%); border:1px solid rgba(188,198,212,.28);
+  background:#1E2A38; box-shadow:0 24px 70px rgba(0,0,0,.35);
+}
+.loader-bar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 14px; border-bottom:1px solid rgba(188,198,212,.2);
+  font:10px Helvetica,Arial,sans-serif; letter-spacing:.16em; color:#A8B2C1;
+}
+.loader-dot{width:7px;height:7px;border-radius:50%;background:#BCC6D4;box-shadow:0 0 12px #BCC6D4}
+.loader-body{padding:28px}
+.loader-logo{
+  display:block; width:min(185px,42vw); aspect-ratio:1/1; object-fit:cover;
+  margin:0 0 24px; border:1px solid rgba(188,198,212,.2);
+}
+.terminal{
+  min-height:152px; font:12px/1.75 "Courier New",monospace;
+  color:#BCC6D4; letter-spacing:.02em;
+}
+.term-line{opacity:0;animation:termIn .22s forwards}
+.term-line.ok{color:#A8B2C1}
+.term-cursor{display:inline-block;width:7px;height:13px;background:#BCC6D4;vertical-align:-2px;animation:blink .65s steps(1) infinite}
+.loader-progress{height:3px;background:#2B3A48;overflow:hidden;margin-top:18px}
+.loader-progress i{display:block;height:100%;width:0;background:#A8B2C1;animation:progress 2.65s ease forwards}
+@keyframes termIn{to{opacity:1}}
+@keyframes blink{50%{opacity:0}}
+@keyframes progress{0%{width:0}35%{width:28%}70%{width:73%}100%{width:100%}}
+@media(max-width:600px){
+  .loader-body{padding:20px}
+  .terminal{font-size:10.5px;min-height:145px}
+  .loader-logo{width:130px}
+}
+
+</style>
+</head>
+<body>
+
+<div id="epb-loader" role="status" aria-label="Loading Elite Protection Bureau">
+  <div class="loader-shell">
+    <div class="loader-bar">
+      <span>EPB SECURE TERMINAL // ROOKIE ACCESS</span>
+      <span class="loader-dot"></span>
+    </div>
+    <div class="loader-body">
+      <img class="loader-logo" src="EPB Logo.png" alt="EPB Logo">
+      <div class="terminal" id="terminal-output"></div>
+      <div class="loader-progress"><i></i></div>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="kicker">ELITE PROTECTION BUREAU · ROOKIE INTAKE</div>
+  <h1 class="congrats">CONGRATULATIONS<br>FOR GETTING INTO<br>THE BUREAU</h1>
+  <p>Your clearance has been registered. Welcome to the Elite Protection Bureau rookie intake. Select a rookie record below to reveal what awaits you.</p>
+</header>
+
+
+
+<main class="directory">
+ <div class="directory-head"><h2>ROOKIE DIRECTORY</h2><p>50 RECORDS · 4 OPERATIONAL UNITS</p></div>
+ <section class="grid"><a class="rookie" href="https://x.com/dokyeom" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Lee Dokyeom</span>
+    </a>
+<a class="rookie" href="https://x.com/euncseok" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Song Eunseok</span>
+    </a>
+<a class="rookie" href="https://x.com/huenrngkai" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Kai Kamal Huening</span>
+    </a>
+<a class="rookie" href="https://x.com/hyohseop" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Ahn Hyoseop</span>
+    </a>
+<a class="rookie" href="https://x.com/hyunjian" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Hwang Hyunjin</span>
+    </a>
+<a class="rookie" href="https://x.com/intacck" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Hwang Intak</span>
+    </a>
+<a class="rookie" href="https://x.com/iouibs" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Louis Elliot Jiho Jourdain Lim</span>
+    </a>
+<a class="rookie" href="https://x.com/Japesim" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Jake Shim</span>
+    </a>
+<a class="rookie" href="https://x.com/Jgahao" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Zhang Jiahao</span>
+    </a>
+<a class="rookie" href="https://x.com/Jiooon" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Han Jihoon</span>
+    </a>
+<a class="rookie" href="https://x.com/Jissunga" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Park Jisung</span>
+    </a>
+<a class="rookie" href="https://x.com/kosewki" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Koseki Yuta</span>
+    </a>
+<a class="rookie" href="https://x.com/Mttheaw" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Seok Matthew</span>
+    </a>
+<a class="rookie" href="https://x.com/ryulnih" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Kim Ryul</span>
+    </a>
+<a class="rookie" href="https://x.com/shinyuci" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Shin Junghwan</span>
+    </a>
+<a class="rookie" href="https://x.com/Soobisn" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Choi Soobin</span>
+    </a>
+<a class="rookie" href="https://x.com/Squngchan" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Jung Sungchan</span>
+    </a>
+<a class="rookie" href="https://x.com/Taaean" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Han Taesan</span>
+    </a>
+<a class="rookie" href="https://x.com/Taemion" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Lee Taemin</span>
+    </a>
+<a class="rookie" href="https://x.com/Tnton" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Anton Lee</span>
+    </a>
+<a class="rookie" href="https://x.com/woomzin" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Cha Woomin</span>
+    </a>
+<a class="rookie" href="https://x.com/wooseork" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Byeon Wooseok</span>
+    </a>
+<a class="rookie" href="https://x.com/xengyue" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Wang Xingyue</span>
+    </a>
+<a class="rookie" href="https://x.com/Yeuhjun" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Choi Yeonjun</span>
+    </a>
+<a class="rookie" href="https://x.com/ynuogjae" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Choi Youngjae</span>
+    </a>
+<a class="rookie" href="https://x.com/Yongxoon" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Jang Yonghoon</span>
+    </a>
+<a class="rookie" href="https://x.com/aenatanaka" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Anna Tanaka</span>
+    </a>
+<a class="rookie" href="https://x.com/crhaeyeoni" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Jung Chaeyeon</span>
+    </a>
+<a class="rookie" href="https://x.com/Ecunchae" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Hong Eunchae</span>
+    </a>
+<a class="rookie" href="https://x.com/eunhaam" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Jung Eunha</span>
+    </a>
+<a class="rookie" href="https://x.com/hyejuwn" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Kim Hyejun</span>
+    </a>
+<a class="rookie" href="https://x.com/Jeongiav" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Jeong Ian</span>
+    </a>
+<a class="rookie" href="https://x.com/Karvna" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Yu Jimin</span>
+    </a>
+<a class="rookie" href="https://x.com/Kimdoyewon" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Kim Doyeon</span>
+    </a>
+<a class="rookie" href="https://x.com/kimjauun" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Kim Jueun</span>
+    </a>
+<a class="rookie" href="https://x.com/Kimsso__" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Kim Soeun</span>
+    </a>
+<a class="rookie" href="https://x.com/kisya" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Park Jiwoo</span>
+    </a>
+<a class="rookie" href="https://x.com/Leeaisa" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Lee Chaeyoung</span>
+    </a>
+<a class="rookie" href="https://x.com/Leesuih" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Lee Subin</span>
+    </a>
+<a class="rookie" href="https://x.com/ohenyu" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Zhu Chenyu</span>
+    </a>
+<a class="rookie" href="https://x.com/Orivia" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Olivia Rodrigo</span>
+    </a>
+<a class="rookie" href="https://x.com/Shiyjie" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Li Shijie</span>
+    </a>
+<a class="rookie" href="https://x.com/steelakim" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Stella Kim</span>
+    </a>
+<a class="rookie" href="https://x.com/swonyoung" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Jang Wonyoung</span>
+    </a>
+<a class="rookie" href="https://x.com/vpharita" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Archive Unit</span>
+      <span class="name">Pharita Boonpakdeethaveeyod</span>
+    </a>
+<a class="rookie" href="https://x.com/Wlonhee" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Lee Wonhee</span>
+    </a>
+<a class="rookie" href="https://x.com/Ye_onm" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Field Agent Unit</span>
+      <span class="name">Kim Ye-on</span>
+    </a>
+<a class="rookie" href="https://x.com/Ynujie" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Shen Yujie</span>
+    </a>
+<a class="rookie" href="https://x.com/yoiharam" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Counseling Unit</span>
+      <span class="name">Yoo Haram</span>
+    </a>
+<a class="rookie" href="https://x.com/Zoiyung" target="_blank" rel="noopener noreferrer">
+      <span class="unit">Cyber Unit</span>
+      <span class="name">Sung Ziyoung</span>
+    </a></section>
+</main>
+<section class="id-section">
+ <div class="id-copy">
+   <span class="label">ROOKIE ACCESS</span>
+   <h2>IDENTIFICATION CARD</h2>
+ </div>
+ <a class="id-download" href="https://drive.google.com/drive/folders/1bZC7QzhagsdgWmuuEQ3rrq_bG9AkeB0G?usp=sharing" target="_blank" rel="noopener noreferrer">
+   <strong>DOWNLOAD ID CARD</strong><small>OPEN GOOGLE DRIVE ↗</small>
+ </a>
+</section>
+
+<script>
+(function(){
+  const lines = [
+    "> initializing EPB secure terminal...",
+    "> establishing encrypted bureau connection...",
+    "> verifying rookie intake clearance...",
+    "> loading personnel directory...",
+    "> clearance confirmed.",
+    "> ACCESS GRANTED."
+  ];
+  const terminal = document.getElementById("terminal-output");
+  const loader = document.getElementById("epb-loader");
+  let i = 0;
+
+  function nextLine(){
+    if(i < lines.length){
+      const row = document.createElement("div");
+      row.className = "term-line" + (i >= 4 ? " ok" : "");
+      row.style.animationDelay = "0s";
+      row.textContent = lines[i];
+      terminal.appendChild(row);
+      i++;
+      setTimeout(nextLine, 360);
+    } else {
+      const cursorRow = document.createElement("div");
+      cursorRow.innerHTML = '> entering bureau <span class="term-cursor"></span>';
+      terminal.appendChild(cursorRow);
+      setTimeout(() => loader.classList.add("hide"), 650);
+      setTimeout(() => loader.remove(), 1400);
+    }
+  }
+
+  window.addEventListener("load", function(){
+    setTimeout(nextLine, 220);
+  });
+})();
+</script>
+
+</body>
+</html>
